@@ -1,1 +1,10 @@
-../.git_shortcuts
+#All git shortcuts here
+
+alias gs="git status"
+alias gl="git log"
+alias gi="git init"
+alias ga="git add"
+alias gc="git commit -m"
+alias gp="git push"
+alias gpm="git push origin master"
+
