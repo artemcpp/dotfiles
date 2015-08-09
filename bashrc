@@ -2,7 +2,7 @@
 env PYTHONPATH=/Library/Frameworks/Python.framework/Version/3.4/lib/python3.4/site-packages
 
 # Aliases
-alias reload="source ~/.bashrc && clear"
+alias reload="source ~/.bashrc &> /dev/null"
 
 alias bashrc="vim ~/.bashrc"
 alias brc="bashrc && reload"

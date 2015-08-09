@@ -6,5 +6,5 @@ alias gi="git init"
 alias ga="git add"
 alias gc="git commit -m"
 alias gp="git push"
-alias gpm="git push origin master"
+alias gpom="git push origin master"
 
