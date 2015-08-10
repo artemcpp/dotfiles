@@ -1,6 +1,9 @@
 # Using Python 3 by default
 env PYTHONPATH=/Library/Frameworks/Python.framework/Version/3.4/lib/python3.4/site-packages
 
+# Load256-colr pallet (used for vim Gruvbox colorscheme)
+source ~/.vim/bundle/gruvbox/gruvbox_256palette_osx.sh
+
 # Aliases
 alias reload="source ~/.bashrc &> /dev/null"
 
@@ -19,7 +22,9 @@ alias la="ls -a"
 alias lla="ls -lha"
 alias psa="ps ax"
 
-alias tmx="tmux attach || tmux new"
+alias tmx="tmux -2 attach || tmux -2 new"
+
+alias mare="more"
 
 # Git shortcuts
 
