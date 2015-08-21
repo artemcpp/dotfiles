@@ -7,4 +7,6 @@ alias ga="git add"
 alias gc="git commit -m"
 alias gp="git push"
 alias gpom="git push origin master"
+alias gck="git checkout"
+alias gca="git commit --amend"
 

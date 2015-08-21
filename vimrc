@@ -19,7 +19,6 @@ Plugin 'gmarik/Vundle.vim'    " let Vundle manage Vundle, required
 "---------=== Code/project navigation ===-------------
 Plugin 'scrooloose/nerdtree'         " Project and file navigation
 Plugin 'majutsushi/tagbar'           " Class/module browser
-Plugin 'LustyExplorer'
 Plugin 'Ack.vim'
 Plugin 'EasyMotion'
 "
@@ -30,48 +29,32 @@ Plugin 'rosenfeld/conque-term'        " Consoles as buffers
 Plugin 'tpope/vim-surround'     " Parentheses, brackets, quotes, XML tags, and more
 Plugin 'flazz/vim-colorschemes'
 Plugin 'morhetz/gruvbox'
-"Plugin 'AutoClose'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'Powerline'
+Plugin 'luochen1990/rainbow'
+Plugin 'tpope/vim-fireplace'
+Plugin 'guns/vim-clojure-static'
+Plugin 'vim-scripts/paredit.vim'
 
 "--------------=== Snippets support ===---------------
 Plugin 'garbas/vim-snipmate'   " Snippets manager
 Plugin 'MarcWeber/vim-addon-mw-utils'  " dependencies #1
 Plugin 'tomtom/tlib_vim'   " dependencies #2
-Plugin 'honza/settings'
 "=====================================================
 
-set ls=2             " всегда показываем статусбар
+set ls=2             " Always show statusbar
 
-" указываем каталог с настройками SnipMate
 let g:snippets_dir = "~/.vim/vim-snippets/snippets"
 
-" TagBar настройки
-map <F4> :TagbarToggle<CR>
-let g:tagbar_autofocus = 0 " автофокус на Tagbar при открытии
-
-" NerdTree настройки
-" показать NERDTree на F3
+" NerdTree
 map <F3> :NERDTreeToggle<CR>
-"игноррируемые файлы с расширениями
 let NERDTreeIgnore=['\~$', '\.pyc$', '\.pyo$', '\.class$', 'pip-log\.txt$', '\.o$']  
 
-" TaskList настройки
-map <F2> :TaskList<CR>     " отобразить список тасков на F2
-
-" Работа буфферами
-map <C-q> :bd<CR>      " CTRL+Q - закрыть текущий буфферim-snippets'    " snippets repo
+map <F2> :TaskList<CR>
 
 " Lusty Explorer
-map <C-p> :LustyBufferExplorer<CR>
+" map <C-p> :LustyBufferExplorer<CR>
 "
 ""---------------=== Languages support ===-------------
-" --- Python ---
-Plugin 'klen/python-mode'          " Python mode (docs, refactor, lints, highlighting, run and ipdb and more)
-Plugin 'davidhalter/jedi-vim'    " Jedi-vim autocomplete plugin
-Plugin 'mitsuhiko/vim-jinja'   " Jinja support for vim
-Plugin 'mitsuhiko/vim-python-combined'  " Combined Python 2/3 for Vim
-
 
 call vundle#end()                " required
 filetype on
@@ -91,6 +74,17 @@ set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe,*.pyc
 
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 
+"" Rainbow Parantheses settings
+
+let g:rainbow_active = 1
+let g:rainbow_operators = 1
+
+au VimEnter * RainbowToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+map <C-T> <C-Space>
 
 syntax on
 
@@ -104,9 +98,7 @@ set encoding=utf-8
 
 set backspace=indent,eol,start
 
-set number     " Display the number of each row
-
-" Use spaces over tabs
+"" Use spaces over tabs
 set expandtab  
 set tabstop=4
 set shiftwidth=4
@@ -120,6 +112,7 @@ set noswapfile
 set visualbell
 
 set nofoldenable
+set relativenumber
 
 
 set t_Co=256
@@ -134,16 +127,14 @@ au FocusGained * :set rnu
 autocmd InsertEnter * :set number
 autocmd InsertLeave * :set relativenumber
 
-" Custom Maps
-cmap vrc e ~/.vimrc
+"" Custom Mappings
 
-map <C-t> :tabedit<CR>
-map <C-q> :tabclose<CR>
-map <C-l> :tabnext<CR>
-map <C-h> :tabprevious<CR>
+cmap Vrc :e ~/.vimrc
 
-no <C-k> ddkP
-no <C-j> ddp
+map <leader>t :tabedit<CR>
+map <leader>q :tabclose<CR>
+map <leader>] :tabnext<CR>
+map <leader>[ :tabprevious<CR>
 
 nmap ;p mayyp`a
 
@@ -154,46 +145,43 @@ map <C-c> :noh<CR>
 
 " abs/relative lines toggle
 function! NumberToggle()
-    if(&relativenumber == 1)
-        set number
-    else
-        set relativenumber
-    endif
+   if(&relativenumber == 1)
+       set number
+   else
+       set relativenumber
+   endif
 endfunc
 
 nnoremap <C-n> :call NumberToggle()<cr>
 
-imap <leader>' ''<ESC>i
-imap <leader>" ""<ESC>i
-imap <leader>( ()<ESC>i
-imap <leader>{ {}<ESC>i
-imap <leader>[ []<ESC>i
-
-nmap go mao<ESC>k`a
-nmap gO maO<ESC>j`a
-
 if exists('$TMUX')
-    function! TmuxOrSplitSwitch(wincmd, tmuxdir)
-        let previous_winnr = winnr()
-        silent! execute "wincmd " . a:wincmd
-        if previous_winnr == winnr()
-            call system("tmux select-pane -" . a:tmuxdir)
-            redraw!
-        endif
-    endfunction
+   function! TmuxOrSplitSwitch(wincmd, tmuxdir)
+       let previous_winnr = winnr()
+       silent! execute "wincmd " . a:wincmd
+       if previous_winnr == winnr()
+           call system("tmux select-pane -" . a:tmuxdir)
+           redraw!
+       endif
+   endfunction
 
-    let previous_title = substitute(system("tmux display-message -p '#{pane_title}'"), '\n', '', '')
-    let &t_ti = "\<Esc>]2;vim\<Esc>\\" . &t_ti
-    let &t_te = "\<Esc>]2;".  previous_title . "\<Esc>\\" .  &t_te
+   let previous_title = substitute(system("tmux display-message -p '#{pane_title}'"), '\n', '', '')
+   let &t_ti = "\<Esc>]2;vim\<Esc>\\" . &t_ti
+   let &t_te = "\<Esc>]2;".  previous_title . "\<Esc>\\" .  &t_te
 
-    nnoremap <silent> <C-h> :call TmuxOrSplitSwitch('h', 'L')<cr> 
-    nnoremap <silent> <C-j> :call TmuxOrSplitSwitch('j', 'D')<cr>
-    nnoremap <silent> <C-k> :call TmuxOrSplitSwitch('k', 'U')<cr>
-    nnoremap <silent> <C-l> :call TmuxOrSplitSwitch('l', 'R')<cr>
+   nnoremap <silent> <C-h> :call TmuxOrSplitSwitch('h', 'L')<cr> 
+   nnoremap <silent> <C-j> :call TmuxOrSplitSwitch('j', 'D')<cr>
+   nnoremap <silent> <C-k> :call TmuxOrSplitSwitch('k', 'U')<cr>
+   nnoremap <silent> <C-l> :call TmuxOrSplitSwitch('l', 'R')<cr>
 else
-    map <C-h> <C-w>h
-    map <C-j> <C-w>j
-    map <C-k> <C-w>k
-    map <C-l> <C-w>l
+   map <C-h> <C-w>h
+   map <C-j> <C-w>j
+   map <C-k> <C-w>k
+   map <C-l> <C-w>l
 endif
+
+" Enable true silence
+
+command! -nargs=1 Silent
+           \ | execute ':silent !'.<q-args>
+           \ | execute ':redraw!'
 

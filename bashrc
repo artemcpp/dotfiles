@@ -13,10 +13,6 @@ alias vimrc="vim ~/.vimrc"
 alias vrc="vimrc"
 alias tmuxconf="vim ~/.tmux.conf && tmux source-file ~/.tmux.conf"
 
-alias pg="cd ~/playground"
-alias pgp="cd ~/playground/python"
-alias pgc="cd ~/playground/clojure"
-
 alias ll="ls -lh"
 alias la="ls -a"
 alias lla="ls -lha"
@@ -26,8 +22,10 @@ alias tmx="tmux -2 attach || tmux -2 new"
 
 alias mare="more"
 
-# Git shortcuts
+#OS X specific aliases
+source ~/.osx_shortcuts
 
+# Git shortcuts
 source ~/.git_shortcuts
 
 # Functions
@@ -44,5 +42,10 @@ conf () {
 editsc () {
     vim ~/.$1_shortcuts; 
     reload;
+}
+
+# True autoreload for vim
+vim-watch () {
+ls $1 | entr tmux send-keys -t $2 ":checktime" C-m
 }
 
