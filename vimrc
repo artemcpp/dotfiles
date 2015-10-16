@@ -21,6 +21,8 @@ Plugin 'scrooloose/nerdtree'         " Project and file navigation
 Plugin 'majutsushi/tagbar'           " Class/module browser
 Plugin 'Ack.vim'
 Plugin 'EasyMotion'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'ctrlpvim/ctrlp.vim'
 "
 ""------------------=== Other ===----------------------
 Plugin 'bling/vim-airline'          " Lean & mean status/tabline for vim
@@ -34,6 +36,7 @@ Plugin 'luochen1990/rainbow'
 Plugin 'tpope/vim-fireplace'
 Plugin 'guns/vim-clojure-static'
 Plugin 'vim-scripts/paredit.vim'
+Plugin 'rust-lang/rust.vim'
 
 "--------------=== Snippets support ===---------------
 Plugin 'garbas/vim-snipmate'   " Snippets manager
@@ -73,6 +76,9 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe,*.pyc
 
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+
+" YCM settings
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 
 "" Rainbow Parantheses settings
 
@@ -184,4 +190,7 @@ endif
 command! -nargs=1 Silent
            \ | execute ':silent !'.<q-args>
            \ | execute ':redraw!'
+
+" Build cpp project with cmake
+map <C-b> :w<cr>:!cmake . && make<cr>
 

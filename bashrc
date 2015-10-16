@@ -1,8 +1,12 @@
+export PATH=/usr/local/lib:/usr/local/include:/opt/local/bin:$PATH
 # Using Python 3 by default
-env PYTHONPATH=/Library/Frameworks/Python.framework/Version/3.4/lib/python3.4/site-packages
+export PYTHONPATH=/Library/Frameworks/Python.framework/Version/3.4/lib/python3.4/site-packages
 
 # Load256-colr pallet (used for vim Gruvbox colorscheme)
 source ~/.vim/bundle/gruvbox/gruvbox_256palette_osx.sh
+
+export PS1="\033[31m\u@\h:\w$ \033[0m"
+export EDITOR=/usr/bin/vim
 
 # Aliases
 alias reload="source ~/.bashrc &> /dev/null"
@@ -12,6 +16,7 @@ alias brc="bashrc && reload"
 alias vimrc="vim ~/.vimrc"
 alias vrc="vimrc"
 alias tmuxconf="vim ~/.tmux.conf && tmux source-file ~/.tmux.conf"
+alias als="vim ~/.osx_shortcuts"
 
 alias ll="ls -lh"
 alias la="ls -a"
@@ -46,6 +51,6 @@ editsc () {
 
 # True autoreload for vim
 vim-watch () {
-ls $1 | entr tmux send-keys -t $2 ":checktime" C-m
+    ls $1 | entr tmux send-keys -t $2 ":checktime" C-m
 }
 
